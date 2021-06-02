@@ -1,3 +1,4 @@
+import sys
 import random
 import csv
 import datetime
@@ -27,15 +28,15 @@ def init():
 
 def print_stage():
     print('Now the word is ' + guess_word)
+    print('mistakes:%d' % mistakes)
     print_hangman(mistakes)
 
 
 def handle_input():
     global user_input
     letter = input('press a-z to guess: ')
-    if len(letter) != 1 or not 'a' <= letter <= 'z':
-        print('just press one letter from a to z, try again')
-        letter = handle_input()
+    while len(letter) != 1 or not 'a' <= letter <= 'z':
+        letter = input('just press one letter from a to z, try again')
     user_input += letter
     return letter
 
@@ -60,8 +61,6 @@ def continue_or_quit():
     if decision == 'c':
         start_one_game()
     else:
-        # SystemExit(0)
-        import sys
         sys.exit(0)
 
 
@@ -69,7 +68,7 @@ def save_result():
     with open(r'./guess.csv', mode='a', newline='', encoding='utf8') as cfa:
         wf = csv.writer(cfa)
         # 写入游戏开始的时间,单次游戏使用的时间,猜测的单词,用户猜测的字符序列
-        data2 = [[start_time, str(time_span)+'秒', real_word, user_input]]
+        data2 = [[start_time, str(time_span) + '秒', real_word, user_input]]
         for i in data2:
             wf.writerow(i)
 
